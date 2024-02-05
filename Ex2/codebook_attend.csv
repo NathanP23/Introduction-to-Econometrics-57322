@@ -1,0 +1,12 @@
+variable,descreption
+attend,classes attended out of 32
+termgpa,GPA for term
+priGPA,cumulative GPA prior to term
+ACT,ACT score
+final,final exam score
+atndrte,percent classes attended
+hwrte,percent homework turned in
+frosh,=1 if freshman
+soph,=1 if sophomore
+skipped,number of classes skipped
+tndfnl,(final - mean)/sd

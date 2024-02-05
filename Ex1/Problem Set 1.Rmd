@@ -1,0 +1,119 @@
+---
+title: "57341 Intro to Econometrics"
+subtitle: "Problem Set 1"
+author: "NathanP23"
+output:
+  html_document:
+    theme: united
+    toc: yes
+    tod_depth: 3
+    toc_float: yes
+    df_print: paged
+  pdf_document:
+    toc: yes
+---
+
+```{r setup}
+rm(list=ls())         # clean R environment
+gc()                  # clean computer memory
+options(scipen=999)   # show numbers in normal format
+
+pacman::p_load(       # install if needed and load libraries
+  tidyverse,
+  haven           # allways call, contains most functions we need
+)
+
+my_path <- "/Users/nathan/Documents/HUJI/Introduction to Econometrics/Ex1/"
+setwd(my_path) # tell R were on the computer we work
+```
+
+# Question 1.
+
+> ## A.
+>
+> > ```{r code of Question 1}
+> > # Reading the CSV file, assgin data into "crimes_data"
+> > crimes_data <- read.csv("crimes.csv")
+> > # now scattering the graph 
+> > ggplot(crimes_data, aes(x = police, y = crimes)) + geom_point()
+> > ```
+>
+> ## B.
+>
+> > If the points tend to rise together,this indicates a positive correlation, meaning that higher numbers of police are associated with higher crime rates. This could be due to a variety of factors, such as police being more numerous in high-crime areas. there is no causal relationship because there are factors we dont know (U)
+
+# Question 2.
+
+> ```{r code of Question 2}
+> # adding row of "crimes_per_capita" using mutate
+> crimes_data <- mutate(crimes_data, crimes_per_capita = crimes / pop)
+> ```
+
+# Question 3.
+
+> ```{r code of Question 3}
+> # adding row of "police_per_capita" using mutate
+> crimes_data <- mutate(crimes_data, police_per_capita = police / pop)
+> ```
+
+# Question 4.
+
+> ## A.
+>
+> > ```{r code of Question 4}
+> > # now scattering the graph 
+> > ggplot(crimes_data, aes(x = police_per_capita, y = crimes_per_capita)) + geom_point()
+> > ```
+>
+> ## B.
+>
+> > we see a low linear correlation between crimes and population or police, so this might explain the unknown factor (or error) from question 1 (U)
+
+# Question 5.
+
+> ```{r code of Question 5}
+> # taking mean of crimes_per_capita at places where <place> == 1
+> mean(crimes_data$crimes_per_capita[crimes_data$west == 1])
+> mean(crimes_data$crimes_per_capita[crimes_data$nrtheast == 1])
+> mean(crimes_data$crimes_per_capita[crimes_data$south == 1])
+> mean(crimes_data$crimes_per_capita[crimes_data$west == 0 & crimes_data$nrtheast == 0 & crimes_data$south == 0])
+> # taking mean of police_per_capita at places where <place> == 1
+> mean(crimes_data$police_per_capita[crimes_data$west == 1])
+> mean(crimes_data$police_per_capita[crimes_data$nrtheast == 1])
+> mean(crimes_data$police_per_capita[crimes_data$south == 1])
+> mean(crimes_data$police_per_capita[crimes_data$west == 0 & crimes_data$nrtheast == 0 & crimes_data$south == 0])
+> ```
+
+# Question 6.
+
+> ## A.
+>
+> > ```{r code of Question 6}
+> > cor(crimes_data$crimes_per_capita,crimes_data$unem)
+> > ```
+>
+> ## B.
+>
+> > no, there is a slight negative correlation but it is not a causal relation
+
+# Question 7.
+
+> ```{r code of Question 7}
+> mean(crimes_data$crimes_per_capita[crimes_data$pop < 350000])
+> ```
+
+# Question 8.
+
+> ```{r code of Question 8}
+> ggplot(filter(crimes_data,crimes_data$year == 87), aes(x = crimes_per_capita, y = unem)) + geom_point()
+> ```
+
+# Question 9.
+
+> there is a correlation between production of planes and cars in the world, but no one is causing the other, so no causal relation.
+
+# Question 10.
+
+> ```{r code of Question 10}
+> # data$marri <- ifelse(data$marriedi == 1, 1, 0)
+> ```

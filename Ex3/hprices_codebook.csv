@@ -1,0 +1,11 @@
+Var,Label
+price,"price, in dollars"
+assess,"assessed value, in dollars"
+bdrms,number of bedrooms
+lotsize,"size of lot, square feet"
+sqrft,"size of house, square feet"
+colonial,=1 if home is colonial style
+lprice,log(price)
+lassess,log(assess)
+llotsize,log(lotsize)
+lsqrft,log(sqrft)

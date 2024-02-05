@@ -1,0 +1,138 @@
+---
+title: "57341 Intro to Econometrics"
+subtitle: "Problem Set 2"
+author: "NathanP23"
+output:
+  html_document:
+    theme: united
+    toc: yes
+    tod_depth: 3
+    toc_float: yes
+    df_print: paged
+  pdf_document:
+    toc: yes
+---
+
+```{r setup}
+rm(list=ls())         # clean R environment
+gc()                  # clean computer memory
+options(scipen=999)   # show numbers in normal format
+
+pacman::p_load(       # install if needed and load libraries
+  tidyverse,
+  haven           # allways call, contains most functions we need
+)
+
+my_path <- "/Users/nathan/Documents/HUJI/Introduction to Econometrics/Ex2/"
+setwd(my_path) # tell R were on the computer we work
+```
+
+# Question 1.
+
+```{r code of Question 1}
+# reading csv file
+data_bwght <- read.csv("bwght_2022.csv")
+# checking the data frame, priniting summary
+summary(data_bwght)
+```
+
+## A.
+
+```{r code of Question 1.1}
+# counting number of lines (each line is a person)
+nrow(data_bwght)
+# taking length of the id vector excluding values where cigs=0/NA 
+length((data_bwght$id[data_bwght$cigs != 0 & !is.na(data_bwght$cigs)]))
+```
+
+## B.
+
+```{r code of Question 1.2}
+mean(data_bwght$cigs[!is.na(data_bwght$cigs)]) 
+```
+
+it is not a good representation because it is including non-smoking ids which are are affected by average. it will be more representative if we use quintiles.
+
+## C.
+
+```{r code of Question 1.3}
+sum(data_bwght$cigs[data_bwght$cigs != 0 & !is.na(data_bwght$cigs)]) / length((data_bwght$id[data_bwght$cigs != 0 & !is.na(data_bwght$cigs)]))
+```
+
+it id a good indicator because it is only the average on smoking ids without non-smoking ids
+
+## D.
+
+```{r code of Question 1.3}
+mean(data_bwght$drink[!is.na(data_bwght$drink)])
+```
+It is 1554 because we are not counting NA values
+
+# Question 3.
+
+> ```{r code of Question 3}
+> # adding row of "police_per_capita" using mutate
+> crimes_data <- mutate(crimes_data, police_per_capita = police / pop)
+> ```
+
+# Question 4.
+
+> ## A.
+>
+> > ```{r code of Question 4}
+> > # now scattering the graph 
+> > ggplot(crimes_data, aes(x = police_per_capita, y = crimes_per_capita)) + geom_point()
+> > ```
+>
+> ## B.
+>
+> > we see a low linear correlation between crimes and population or police, so this might explain the unknown factor (or error) from question 1 (U)
+
+# Question 5.
+
+> ```{r code of Question 5}
+> # taking mean of crimes_per_capita at places where <place> == 1
+> mean(crimes_data$crimes_per_capita[crimes_data$west == 1])
+> mean(crimes_data$crimes_per_capita[crimes_data$nrtheast == 1])
+> mean(crimes_data$crimes_per_capita[crimes_data$south == 1])
+> mean(crimes_data$crimes_per_capita[crimes_data$west == 0 & crimes_data$nrtheast == 0 & crimes_data$south == 0])
+> # taking mean of police_per_capita at places where <place> == 1
+> mean(crimes_data$police_per_capita[crimes_data$west == 1])
+> mean(crimes_data$police_per_capita[crimes_data$nrtheast == 1])
+> mean(crimes_data$police_per_capita[crimes_data$south == 1])
+> mean(crimes_data$police_per_capita[crimes_data$west == 0 & crimes_data$nrtheast == 0 & crimes_data$south == 0])
+> ```
+
+# Question 6.
+
+> ## A.
+>
+> > ```{r code of Question 6}
+> > cor(crimes_data$crimes_per_capita,crimes_data$unem)
+> > ```
+>
+> ## B.
+>
+> > no, there is a slight negative correlation but it is not a causal relation
+
+# Question 7.
+
+> ```{r code of Question 7}
+> mean(crimes_data$crimes_per_capita[crimes_data$pop < 350000])
+> ```
+
+# Question 8.
+
+> ```{r code of Question 8}
+> ggplot(filter(crimes_data,crimes_data$year == 87), aes(x = crimes_per_capita, y = unem)) + geom_point()
+> ```
+
+# Question 9.
+
+> there is a correlation between production of planes and cars in the world, but no one is causing the other, so no causal relation.
+
+# Question 10.
+
+> ```{r code of Question 10}
+> # data$marri <- ifelse(data$marriedi == 1, 1, 0)
+> ```
